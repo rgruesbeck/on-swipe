@@ -34,6 +34,7 @@ onSwipe({options})
 
 ### Returns
 The swipe events `event.detail` attribute contains the following properties:
+
 | Variable | Type | Description |
 |----------|------|-------------|
 | `direction`   | `string` | The direction of the swipe in [left, right, up, down]|
