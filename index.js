@@ -64,8 +64,9 @@ const parseDiff = (diff) => {
         return {
             dx: swipe.dx,
             dy: swipe.dy,
-            dt: swipe.dt,
-            v: velocity(distance(swipe.dx, swipe.dy), swipe.dt),
+            velocity: velocity(distance(swipe.dx, swipe.dy), swipe.dt),
+            distance: distance(swipe.dx, swipe.dy),
+            duration: swipe.dt,
             direction: swipe.direction
         };
     })

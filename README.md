@@ -38,10 +38,11 @@ The swipe events `event.detail` attribute contains the following properties:
 | Variable | Type | Description |
 |----------|------|-------------|
 | `direction`   | `string` | The direction of the swipe in [left, right, up, down]|
-| `v` | `float` | velocity of swipe in pixels/millisecond |
+| `velocity` | `float` | velocity of swipe in pixels/millisecond |
+| `distance` | `float` | distance of swipe in pixels |
+| `duration` | `int` | duration of swipe in milliseconds |
 | `dx` | `float` | distance of swipe x direction |
 | `dy` | `float` | distance of swipe y direction |
-| `dt` | `int` | duration of swipe in milliseconds |
 
 ### Examples
 #### Default
