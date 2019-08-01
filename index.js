@@ -1,10 +1,8 @@
-// onswipe
-
 // list touches
-var touches = [];
+let touches = [];
 
 // take touch list return a diffs for x and y
-const touchListDiffs = (touchList) => {
+const touchDiffs = (touchList) => {
     return touchList
     .map((touch, idx, arr) => {
         // collect diffs
@@ -26,7 +24,7 @@ const touchListDiffs = (touchList) => {
 }
 
 // take diffs, return a swipe with a direction
-const diffSwipe = (diff) => {
+const parseDiff = (diff) => {
     return [diff]
     .map(diff => {
         return {
@@ -57,7 +55,7 @@ const diffSwipe = (diff) => {
     .reduce(s => s);
 }
 
-const onSwipe = (type, touch, length, fn) => {
+const getSwipe = (type, touch, length, fn) => {
     // reject non touch types
     if (!type.match(/touchstart|touchmove|touchend/)) {
         return;
@@ -79,12 +77,37 @@ const onSwipe = (type, touch, length, fn) => {
 
         // convert: touches -> diffs -> swipe
         const swipe = [touches]
-        .map(touches => touchListDiffs(touches))
-        .map(diff => diffSwipe(diff))
+        .map(touches => touchDiffs(touches))
+        .map(diff => parseDiff(diff))
         .reduce(s => s);
 
         fn(swipe);
     }
 }
 
-export default onSwipe;
+// handle swipe
+const handleSwipe = (type, touch) => {
+
+    // get a swipe after 5 touch moves
+    getSwipe(type, touch, 5, (swipe) => {
+
+        document.dispatchEvent(new CustomEvent('swipe', {
+            detail: swipe,
+            swipe: swipe
+        }))
+    });
+}
+
+const onSwipe = (node) => {
+
+    // add listeners
+    node.addEventListener('touchstart', ({ touches }) => handleSwipe('touchstart', touches[0]));
+    node.addEventListener('touchmove', ({ touches }) => handleSwipe('touchmove', touches[0]));
+    node.addEventListener('touchend', ({ touches }) => handleSwipe('touchend', touches[0]));
+
+
+
+}
+
+
+export default getSwipe;

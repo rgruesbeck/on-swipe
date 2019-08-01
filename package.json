@@ -4,7 +4,7 @@
   "description": "get swipe direction and speed",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "start": "npx parcel test.html"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/rgruesbeck/on-swipe/issues"
   },
-  "homepage": "https://github.com/rgruesbeck/on-swipe#readme"
+  "homepage": "https://github.com/rgruesbeck/on-swipe#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.3"
+  }
 }
