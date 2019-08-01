@@ -118,10 +118,10 @@ const broadcastSwipe = (type, touch) => {
     });
 }
 
-// relying on closure: refactor later
-const onSwipe = (node, sensitivity) => {
-    beacon = node || document;
-    moves = sensitivity || 5;
+// todo: refactor to use decorator
+const onSwipe = (ops) => {
+    beacon = ops.node || document;
+    moves = ops.sensitivity || 5;
 
     // add listeners
     beacon.addEventListener('touchstart', ({ touches }) => broadcastSwipe('touchstart', touches[0]));

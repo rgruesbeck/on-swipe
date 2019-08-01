@@ -1,7 +1,7 @@
 import onSwipe from './index.js';
 
-onSwipe(document, 5);
+onSwipe({ node: window, sensitivity: 5 });
 
-document.addEventListener('swipe', (event) => {
+window.addEventListener('swipe', (event) => {
     console.log(event.detail);
 })
