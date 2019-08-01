@@ -1,6 +1,10 @@
+// on-swipe
+
+// beacon node, sensitivity in moves, touches, event options
 let beacon;
 let moves;
 let touches = [];
+let eventOps = {};
 
 // distance
 const distance = (a, b) =>  {
@@ -113,15 +117,23 @@ const broadcastSwipe = (type, touch) => {
     getSwipe(type, touch, moves, (swipe) => {
 
         beacon.dispatchEvent(new CustomEvent('swipe', {
-            detail: swipe
+            ...{ detail: swipe },
+            ...eventOps
         }))
     });
 }
 
 // todo: refactor to use decorator
 const onSwipe = (ops) => {
+    // swipe options
     beacon = ops.node || document;
     moves = ops.sensitivity || 5;
+
+    // event options
+    eventOps = {
+        bubbles: ops.bubbles === false ? false : true,
+        cancelable: ops.cancelable === false ? false : true
+    }
 
     // add listeners
     beacon.addEventListener('touchstart', ({ touches }) => broadcastSwipe('touchstart', touches[0]));
