@@ -1,5 +1,17 @@
-// list touches
+let beacon;
+let moves;
 let touches = [];
+
+// distance
+const distance = (a, b) =>  {
+    console.log(a, b)
+    return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+}
+
+// velocity
+const velocity = (d, t) =>  {
+    return d / t;
+}
 
 // take touch list return a diffs for x and y
 const touchDiffs = (touchList) => {
@@ -10,17 +22,20 @@ const touchDiffs = (touchList) => {
         return {
             x: touch.x,
             y: touch.y,
+            t: touch.t,
             dx: touch.x - prev.x,
-            dy: touch.y - prev.y
+            dy: touch.y - prev.y,
+            dt: touch.t - prev.t,
         }
     })
     .reduce((sum, diff) => {
         // sum the diffs
         sum.dx += diff.dx;
         sum.dy += diff.dy;
+        sum.dt += diff.dt;
 
         return sum;
-    }, { dx: 0, dy: 0 });
+    }, { dx: 0, dy: 0, dt: 0 });
 }
 
 // take diffs, return a swipe with a direction
@@ -31,7 +46,8 @@ const parseDiff = (diff) => {
             x: Math.abs(diff.dx) > Math.abs(diff.dy),
             y: Math.abs(diff.dy) > Math.abs(diff.dx),
             dx: diff.dx,
-            dy: diff.dy
+            dy: diff.dy,
+            dt: diff.dt
         };
     })
     .map(swipe => {
@@ -49,6 +65,8 @@ const parseDiff = (diff) => {
         return {
             dx: swipe.dx,
             dy: swipe.dy,
+            dt: swipe.dt,
+            v: velocity(distance(swipe.dx, swipe.dy), swipe.dt),
             direction: swipe.direction
         };
     })
@@ -69,7 +87,11 @@ const getSwipe = (type, touch, length, fn) => {
     // add to touch list
     if (type === 'touchmove') {
         let { clientX, clientY } = touch;
-        touches.push({ x: clientX, y: clientY });
+        touches.push({
+            x: clientX,
+            y: clientY,
+            t: Date.now()
+        });
     }
 
     // get user intention
@@ -85,29 +107,26 @@ const getSwipe = (type, touch, length, fn) => {
     }
 }
 
-// handle swipe
-const handleSwipe = (type, touch) => {
+// broadcast swipe event
+const broadcastSwipe = (type, touch) => {
 
-    // get a swipe after 5 touch moves
-    getSwipe(type, touch, 5, (swipe) => {
+    getSwipe(type, touch, moves, (swipe) => {
 
-        document.dispatchEvent(new CustomEvent('swipe', {
-            detail: swipe,
-            swipe: swipe
+        beacon.dispatchEvent(new CustomEvent('swipe', {
+            detail: swipe
         }))
     });
 }
 
-const onSwipe = (node) => {
+// relying on closure: refactor later
+const onSwipe = (node, sensitivity) => {
+    beacon = node || document;
+    moves = sensitivity || 5;
 
     // add listeners
-    node.addEventListener('touchstart', ({ touches }) => handleSwipe('touchstart', touches[0]));
-    node.addEventListener('touchmove', ({ touches }) => handleSwipe('touchmove', touches[0]));
-    node.addEventListener('touchend', ({ touches }) => handleSwipe('touchend', touches[0]));
-
-
-
+    beacon.addEventListener('touchstart', ({ touches }) => broadcastSwipe('touchstart', touches[0]));
+    beacon.addEventListener('touchmove', ({ touches }) => broadcastSwipe('touchmove', touches[0]));
+    beacon.addEventListener('touchend', ({ touches }) => broadcastSwipe('touchend', touches[0]));
 }
 
-
-export default getSwipe;
+export default onSwipe;
