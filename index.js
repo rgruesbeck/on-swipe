@@ -4,7 +4,6 @@ let touches = [];
 
 // distance
 const distance = (a, b) =>  {
-    console.log(a, b)
     return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
 }
 
@@ -29,7 +28,7 @@ const touchDiffs = (touchList) => {
         }
     })
     .reduce((sum, diff) => {
-        // sum the diffs
+        // sum diffs
         sum.dx += diff.dx;
         sum.dy += diff.dy;
         sum.dt += diff.dt;
