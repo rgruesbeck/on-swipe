@@ -1,6 +1,21 @@
 # on-swipe
 Add a swipe event that returns direction and speed.
 
+## tldr;
+```js
+import onSwipe from 'on-swipe';
+
+// register swipe event emitter
+onSwipe();
+
+// listen for swipe event
+document.addEventListener('swipe', (event) => {
+
+    // use swipe
+    console.log(event.detail);
+})
+```
+
 ## Install
 ```sh
 npm install --save on-swipe
@@ -28,15 +43,34 @@ The swipe events `event.detail` attribute contains the following properties:
 | `dt` | `int` | duration of swipe in milliseconds |
 
 ### Examples
+#### Default
 
 ```js
 import onSwipe from 'on-swipe';
 
-// register swipe event emmiter
+// register swipe event emitter
 onSwipe();
 
 // listen for swipe event
 document.addEventListener('swipe', (event) => {
+
+    // use swipe
+    console.log(event.detail);
+})
+```
+
+#### Options
+
+```js
+import onSwipe from 'on-swipe';
+
+// register swipe event emitter
+onSwipe({ node: window, sensitivity: 10 });
+
+// listen for swipe event
+window.addEventListener('swipe', (event) => {
+
+    // use swipe
     console.log(event.detail);
 })
 ```
