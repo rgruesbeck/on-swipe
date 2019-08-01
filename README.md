@@ -29,8 +29,10 @@ Call `onSwipe()` once after your app loads.
 onSwipe({options})
 ```
 * `options` is an object with the following optional properties:
-  + `node` DOM node you want to broadcast the swipe event from. (defaults to `document`)
-  + `sensitivity` number of touch moves before emitting a swipe event. (defaults to `5`)
+  + `node: document` DOM node you want to broadcast the swipe event from.
+  + `sensitivity: 5` number of touch moves before emitting a swipe event.
+  + `bubbles: true` if the event should bubble.
+  + `cancelable: true` if the `event.preventDefault()` should work.
 
 ### Returns
 The swipe events `event.detail` attribute contains the following properties:
