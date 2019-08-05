@@ -1,5 +1,5 @@
 # on-swipe
-Add a swipe event that returns direction and speed.
+Adds a swipe event that reports direction, velocity, distance, and duration of the swipe.
 
 ## tldr;
 ```js
