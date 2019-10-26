@@ -12,8 +12,12 @@
   },
   "keywords": [
     "swipe",
-    "speed",
-    "direction"
+    "event",
+    "direction",
+    "velocity",
+    "distance",
+    "duration",
+    "speed"
   ],
   "author": "Ron Gruesbeck",
   "license": "MIT",
