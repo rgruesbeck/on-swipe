@@ -1,5 +1,5 @@
 # on-swipe
-Adds a swipe event that reports direction, velocity, distance, and duration of the swipe.
+Adds a swipe event do the DOM that reports direction, velocity, distance, and duration.
 
 ## tldr;
 ```js
@@ -59,7 +59,7 @@ onSwipe();
 document.addEventListener('swipe', (event) => {
 
     // use swipe
-    console.log(event.detail);
+    let { direction, velocity, distance, duration } = event.detail;
 })
 ```
 
@@ -75,6 +75,6 @@ onSwipe({ node: window, sensitivity: 10 });
 window.addEventListener('swipe', (event) => {
 
     // use swipe
-    console.log(event.detail);
+    let { direction, velocity, distance, duration } = event.detail;
 })
 ```
