@@ -1,6 +1,6 @@
 {
   "name": "on-swipe",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Adds a swipe event to the DOM that reports direction, velocity, distance, and duration on touch devices",
   "main": "index.js",
   "scripts": {
