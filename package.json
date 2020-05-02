@@ -1,10 +1,10 @@
 {
     "name": "on-swipe",
-    "version": "1.0.8",
+    "version": "1.1.0",
     "description": "Adds a swipe event to the DOM that reports direction, velocity, distance, and duration on touch devices",
     "main": "index.js",
     "scripts": {
-        "start": "npx parcel test.html"
+        "start": "npx parcel test/test.html"
     },
     "repository": {
         "type": "git",
