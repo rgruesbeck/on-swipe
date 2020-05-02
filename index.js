@@ -1,6 +1,7 @@
 // on-swipe
 
 // beacon node, sensitivity in moves, touches, event options
+let _removeEventListener; // cached remove event listener
 let beacon;
 let moves;
 let touches = [];
@@ -112,9 +113,9 @@ const getSwipe = (type, touch, length, fn) => {
 }
 
 // broadcast swipe event
-const broadcastSwipe = (type, touch) => {
+const broadcastSwipe = ({ type, touches }) => {
     // get swipe and boardcast
-    getSwipe(type, touch, moves, (swipe) => {
+    getSwipe(type, touches[0], moves, (swipe) => {
         let detail = { detail: swipe };
 
         beacon.dispatchEvent(new CustomEvent('swipe', {
@@ -122,6 +123,39 @@ const broadcastSwipe = (type, touch) => {
             ...eventOps
         }))
     });
+}
+
+const removeEventListener = (type, fn) => {
+    // call original removeEventListener
+    _removeEventListener.call(beacon, type, fn);
+
+    // teardown if type === swipe
+    if (type === 'swipe') {
+        teardown();
+    }
+}
+
+// setup
+const setup = () => {
+    // add touch listeners
+    beacon.addEventListener('touchstart', broadcastSwipe);
+    beacon.addEventListener('touchmove', broadcastSwipe);
+    beacon.addEventListener('touchend', broadcastSwipe);
+
+    // create teardown hook for removeEventlistener
+    _removeEventListener = beacon.removeEventListener;
+    beacon.removeEventListener = removeEventListener;
+}
+
+// teardown
+const teardown = () => {
+    // remove touch event listeners
+    beacon.removeEventListener('touchstart', broadcastSwipe);
+    beacon.removeEventListener('touchmove', broadcastSwipe);
+    beacon.removeEventListener('touchend', broadcastSwipe);
+
+    // restore beacon.removeEventListener
+    beacon.removeEventListener = _removeEventListener;
 }
 
 // todo: refactor to use decorator
@@ -136,11 +170,7 @@ const onSwipe = (ops) => {
         cancelable: ops.cancelable === false ? false : true
     }
 
-    // add listeners
-    beacon.addEventListener('touchstart', ({ touches }) => broadcastSwipe('touchstart', touches[0]));
-    beacon.addEventListener('touchmove', ({ touches }) => broadcastSwipe('touchmove', touches[0]));
-    beacon.addEventListener('touchend', ({ touches }) => broadcastSwipe('touchend', touches[0]));
-
+    setup();
 }
 
 export default onSwipe;

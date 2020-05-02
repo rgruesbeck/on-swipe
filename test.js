@@ -1,7 +1,12 @@
 import onSwipe from './index.js';
 
-onSwipe({ node: document.body, sensitivity: 5 });
+onSwipe({ node: document, sensitivity: 5 });
 
-window.addEventListener('swipe', (event) => {
+document.addEventListener('swipe', (event) => {
+    let swipe = document.createElement('p');
+    swipe.innerText = JSON.stringify(event.detail);
+
+    document.body.appendChild(swipe);
+
     console.log(event.detail);
 })
